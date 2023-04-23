@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+
+import Timer from "./timer";
 
 const AppComponent = () => {
   return (
-    <div>AppComponent</div>
-  )
-}
+    <div>
+      <Timer />
+    </div>
+  );
+};
 
-export default AppComponent
+export default AppComponent;
