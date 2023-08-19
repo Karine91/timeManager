@@ -51,7 +51,7 @@ const Timer = () => {
       <button onClick={onStart}>
         {isRunning ? "Pause" : time ? "Resume" : "Start"}
       </button>
-      <button>Reset</button>
+      <button>Stop</button>
     </>
   );
 };

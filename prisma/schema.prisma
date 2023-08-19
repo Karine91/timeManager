@@ -14,7 +14,16 @@ model Activity {
   id Int @id @default(autoincrement())
   title String
   description String?
+  tasks Task[]
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+  title String
+  description String?
   records Record[]
+  activity Activity @relation(fields: [activityId], references: [id])
+  activityId Int
 }
 
 model Record {
@@ -22,7 +31,7 @@ model Record {
   description String?
   startTime DateTime
   endTime DateTime
-  activity Activity @relation(fields: [activityId], references: [id])
-  activityId Int
+  task Task @relation(fields: [taskId], references: [id])
+  taskId Int
 }
 
