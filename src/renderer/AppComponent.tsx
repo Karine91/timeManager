@@ -1,19 +1,18 @@
-import React from "react";
-import { ChakraBaseProvider, extendBaseTheme } from "@chakra-ui/react";
-import chakraTheme from "@chakra-ui/theme";
+import React, { useEffect } from "react";
+import { ChakraBaseProvider } from "@chakra-ui/react";
 
 import ActivitiesList from "./activities/ActivitiesList";
 import MainLayout from "./layouts/MainLayout";
 
-const { Button } = chakraTheme.components;
-
-const theme = extendBaseTheme({
-  components: {
-    Button,
-  },
-});
+import theme from "./theme";
 
 const AppComponent = () => {
+  useEffect(() => {
+    if (!localStorage.getItem("chakra-ui-color-mode")) {
+      localStorage.setItem("chakra-ui-color-mode", "dark");
+    }
+  }, []);
+
   return (
     <ChakraBaseProvider theme={theme}>
       <MainLayout>
