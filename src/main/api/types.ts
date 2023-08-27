@@ -5,12 +5,12 @@ export const enum Activities {
   CreateActivity = "create_activity",
 }
 
+export type Activity = Prisma.ActivityGetPayload<{
+  include: {
+    tasks: true;
+  };
+}>;
+
 export interface IActivitiesApi {
-  getActivities: () => Prisma.PrismaPromise<
-    Prisma.ActivityGetPayload<{
-      include: {
-        tasks: true;
-      };
-    }>
-  >;
+  getActivities: () => Prisma.PrismaPromise<Activity[]>;
 }

@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/preset-react": "^7.22.5",
     "@electron-forge/cli": "^6.0.5",
     "@electron-forge/maker-deb": "^6.0.5",
     "@electron-forge/maker-rpm": "^6.0.5",
@@ -48,8 +49,7 @@
     "style-loader": "^3.0.0",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.2.2",
-    "ts-node": "^10.0.0",
-    "typescript": "~4.5.4"
+    "ts-node": "^10.0.0"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.0",
@@ -61,6 +61,7 @@
     "framer-motion": "^10.16.0",
     "prisma": "^5.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.5"
   }
 }
