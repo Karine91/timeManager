@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Heading, HStack, Text } from "@chakra-ui/react";
+import { Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import { Activity } from "../../main/api/types";
 import ActivityItem from "./ActivityItem";
 
@@ -14,12 +14,14 @@ const ActivitiesList = () => {
 
   return (
     <>
-      <Heading as="h1">Activities</Heading>
-      <HStack>
+      <Heading as="h1" mb={3}>
+        Activities
+      </Heading>
+      <SimpleGrid columns={activities.length} spacing={6}>
         {activities.map((item) => (
           <ActivityItem key={item.id} {...item} />
         ))}
-      </HStack>
+      </SimpleGrid>
     </>
   );
 };

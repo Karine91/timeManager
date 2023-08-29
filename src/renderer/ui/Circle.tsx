@@ -9,8 +9,8 @@ interface IProps {
 
 const Circle = ({ size, thickness, color, value }: IProps) => {
   const mainCenter = size / 2;
-  const outerCirclesWidth = 3;
-  const outerColor = "white";
+  const outerCirclesWidth = 1.5;
+  const outerColor = "cyan.200";
   const trackColor = "gray.300";
 
   const radiusOuterCircle = size / 2 - outerCirclesWidth / 2;
@@ -18,8 +18,9 @@ const Circle = ({ size, thickness, color, value }: IProps) => {
   const radiusInnerCircle = radius - thickness / 2 - outerCirclesWidth / 2;
 
   const circumference = 2 * Math.PI * radius;
+  const _value = Math.min(value, 100);
 
-  const progress = circumference - (value / 100) * circumference;
+  const progress = circumference - (_value / 100) * circumference;
 
   return (
     <svg width={size} height={size}>
@@ -80,3 +81,24 @@ const Circle = ({ size, thickness, color, value }: IProps) => {
 };
 
 export default Circle;
+
+{
+  /* <>
+  <Circle size={200} thickness={14} value={80} color="url(#cl1)" />
+  <svg width="0" height="0">
+    <defs>
+      <linearGradient
+        id="cl1"
+        gradientUnits="objectBoundingBox"
+        gradientTransform="rotate(90)"
+      >
+        <stop stopColor="#1A365D" />
+        <stop offset="25%" stopColor="#2B6CB0" />
+        <stop offset="50%" stopColor="#3182CE" />
+        <stop offset="75%" stopColor="#4299E1" />
+        <stop offset="100%" stopColor="#63B3ED" />
+      </linearGradient>
+    </defs>
+  </svg>
+</>; */
+}

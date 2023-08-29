@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import {
   Box,
   useColorModeValue,
@@ -8,11 +9,8 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
-interface IProps {
-  children: React.ReactNode;
-}
 
-const MainLayout = ({ children }: IProps) => {
+const MainLayout = () => {
   const { colorMode, setColorMode } = useColorMode();
   const bg = useColorModeValue(
     "linear(to-br, gray.50, gray.100, gray.100, gray.50)",
@@ -40,7 +38,9 @@ const MainLayout = ({ children }: IProps) => {
           onClick={changeTheme}
         />
       </Flex>
-      <Container>{children}</Container>
+      <Container maxW="container.lg">
+        <Outlet />
+      </Container>
     </Box>
   );
 };
