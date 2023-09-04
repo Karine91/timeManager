@@ -13,4 +13,6 @@ contextBridge.exposeInMainWorld("darkMode", {
 
 contextBridge.exposeInMainWorld("activitiesApi", {
   getActivities: () => ipcRenderer.invoke(Activities.GetActivities),
+  getActivityById: (id: number) =>
+    ipcRenderer.invoke(Activities.GetActivityById, id),
 });

@@ -1,8 +1,15 @@
 import React from "react";
 import { Activity } from "../../main/api/types";
 import { Flex, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-const ActivityItem = ({ title }: Activity) => {
+const ActivityItem = ({ title, id }: Activity) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/activity/${id}`);
+  };
+
   return (
     <Flex
       w="100%"
@@ -17,6 +24,7 @@ const ActivityItem = ({ title }: Activity) => {
           transform: "translateY(10px)",
         },
       }}
+      onClick={handleClick}
     >
       <Text
         sx={{

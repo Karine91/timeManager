@@ -30,7 +30,7 @@ const MainLayout = () => {
         width: "100vw",
       }}
     >
-      <Flex align="center" sx={{ padding: 2 }}>
+      <Flex align="center" sx={{ padding: 2, height: "60px" }}>
         <IconButton
           aria-label="change theme"
           sx={{ marginLeft: "auto" }}
@@ -38,7 +38,10 @@ const MainLayout = () => {
           onClick={changeTheme}
         />
       </Flex>
-      <Container maxW="container.lg">
+      <Container
+        maxW="container.lg"
+        sx={{ py: 2, height: "calc(100% - 60px)" }}
+      >
         <Outlet />
       </Container>
     </Box>
