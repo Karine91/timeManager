@@ -13,29 +13,14 @@ function ActivityView() {
     });
   }, []);
 
+  if (!activity) return "Loading...";
+
   return (
-    <Box
-      sx={{ pl: "130px", height: "100%", position: "relative", width: "100%" }}
-    >
-      <Text
-        sx={{
-          fontSize: "9xl",
-          fontWeight: "black",
-          textTransform: "uppercase",
-          lineHeight: 1,
-          px: 4,
-          bgGradient: "linear(to-r, yellow.400, orange.400, orange.400)",
-          bgClip: "text",
-          transform: "rotate(270deg)",
-          position: "absolute",
-          bottom: 0,
-          left: 10,
-          right: 0,
-          transformOrigin: "left",
-        }}
-      >
-        {activity?.title}
+    <Box>
+      <Text sx={{ textTransform: "uppercase", fontSize: "3xl" }}>
+        {activity.title}
       </Text>
+      <Text>{activity.description}</Text>
     </Box>
   );
 }

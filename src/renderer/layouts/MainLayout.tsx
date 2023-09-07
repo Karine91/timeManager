@@ -7,8 +7,10 @@ import {
   IconButton,
   Flex,
   Container,
+  Text,
 } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import NavPanel from "../NavPanel";
 
 const MainLayout = () => {
   const { colorMode, setColorMode } = useColorMode();
@@ -38,12 +40,39 @@ const MainLayout = () => {
           onClick={changeTheme}
         />
       </Flex>
-      <Container
-        maxW="container.lg"
-        sx={{ py: 2, height: "calc(100% - 60px)" }}
+
+      <Flex
+        sx={{
+          pl: "130px",
+          height: "calc(100% - 60px)",
+          position: "relative",
+          width: "100%",
+        }}
       >
-        <Outlet />
-      </Container>
+        <Text
+          sx={{
+            fontSize: "10vh",
+            fontWeight: "black",
+            textTransform: "uppercase",
+            lineHeight: 1,
+            px: 4,
+            bgGradient: "linear(to-r, yellow.400, orange.400, orange.400)",
+            bgClip: "text",
+            transform: "rotate(270deg)",
+            position: "absolute",
+            bottom: 0,
+            left: "70px",
+            right: 0,
+            transformOrigin: "left",
+          }}
+        >
+          Timetracker
+        </Text>
+        <NavPanel />
+        <Container maxW="container.lg" sx={{ py: 2 }}>
+          <Outlet />
+        </Container>
+      </Flex>
     </Box>
   );
 };
