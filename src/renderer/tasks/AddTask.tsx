@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import {
   Button,
   useDisclosure,
@@ -9,24 +9,30 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import Modal from "../ui/Modal";
+import TaskForm from "./TaskForm";
 
 const AddTasks = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const formId = useId();
   return (
     <>
       <Button onClick={onOpen} leftIcon={<AddIcon />}>
         Create task
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalHeader>Modal Title</ModalHeader>
+        <ModalHeader>Add task</ModalHeader>
         <ModalCloseButton />
-        <ModalBody></ModalBody>
+        <ModalBody>
+          <TaskForm id={formId} />
+        </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
-            Close
+          <Button variant="ghost" mr={3} onClick={onClose}>
+            Cancel
           </Button>
-          <Button variant="ghost">Secondary Action</Button>
+          <Button form={formId} type="submit" colorScheme="blue">
+            Save
+          </Button>
         </ModalFooter>
       </Modal>
     </>

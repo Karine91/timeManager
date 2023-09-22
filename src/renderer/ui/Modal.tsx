@@ -4,7 +4,6 @@ import {
   ModalContent,
   ModalProps,
   useColorModeValue,
-  Box,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -41,9 +40,7 @@ const Modal = ({ children, isOpen, onClose, ...otherProps }: IProps) => {
           },
         }}
       >
-        {/* <Box backdropFilter="auto" backdropBlur="8px"> */}
         {children}
-        {/* </Box> */}
       </ModalContent>
     </ChakraModal>
   );
