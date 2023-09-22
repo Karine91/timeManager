@@ -15,7 +15,7 @@ function ActivityView() {
     });
   }, []);
 
-  if (!activity) return "Loading...";
+  if (!activity) return <>Loading...</>;
 
   return (
     <Box>

@@ -64,6 +64,7 @@ const MainLayout = () => {
             left: "70px",
             right: 0,
             transformOrigin: "left",
+            pointerEvents: "none",
           }}
         >
           Timetracker
