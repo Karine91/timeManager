@@ -15,7 +15,7 @@ import NavPanel from "../NavPanel";
 const MainLayout = () => {
   const { colorMode, setColorMode } = useColorMode();
   const bg = useColorModeValue(
-    "linear(to-br, gray.50, gray.100, gray.100, gray.50)",
+    "linear(to-br, gray.300, gray.100, gray.100, gray.300)",
     "linear(to-br, gray.900, gray.800, gray.800, gray.900)"
   );
 
@@ -56,8 +56,7 @@ const MainLayout = () => {
             textTransform: "uppercase",
             lineHeight: 1,
             px: 4,
-            bgGradient: "linear(to-r, yellow.400, orange.400, orange.400)",
-            bgClip: "text",
+
             transform: "rotate(270deg)",
             position: "absolute",
             bottom: 0,
@@ -65,9 +64,41 @@ const MainLayout = () => {
             right: 0,
             transformOrigin: "left",
             pointerEvents: "none",
+            whiteSpace: "nowrap",
+            width: "100vh",
+            "&:after": {
+              content: '"Timetracker"',
+              textTransform: "uppercase",
+              position: "absolute",
+              width: "100%",
+              whiteSpace: "nowrap",
+              top: useColorModeValue("5px", "8px"),
+              color: `${useColorModeValue("#5a5858", "black")}`,
+              filter: useColorModeValue("blur(3px)", "blur(4px)"),
+              zIndex: -1,
+              textShadow: `${useColorModeValue(
+                "#d5c8be",
+                "#dda229e6"
+              )} 0 0 0.125em, ${useColorModeValue(
+                "#b1b1b0",
+                "#87450c9e"
+              )} 0 0 0.45em`,
+            },
           }}
         >
-          Timetracker
+          <Box
+            as="span"
+            sx={{
+              display: "block",
+              bgGradient: useColorModeValue(
+                "linear(to-r, yellow.300, orange.300, orange.300)",
+                "linear(to-r, yellow.400, orange.400, orange.400)"
+              ),
+              bgClip: "text",
+            }}
+          >
+            Timetracker
+          </Box>
         </Text>
         <NavPanel />
         <Container maxW="container.lg" sx={{ py: 2 }}>

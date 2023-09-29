@@ -14,10 +14,10 @@ const ActivitiesList = () => {
 
   return (
     <>
-      <Heading as="h1" mb={3}>
+      <Heading as="h1" mb={5}>
         Activities
       </Heading>
-      <SimpleGrid columns={activities.length} spacing={6}>
+      <SimpleGrid columns={activities.length} spacing={8}>
         {activities.map((item) => (
           <ActivityItem key={item.id} {...item} />
         ))}
