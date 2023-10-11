@@ -8,7 +8,7 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import Modal from "../ui/Modal";
+import Modal, { ColoredModalClosePanel } from "../ui/Modal";
 import TaskForm from "./TaskForm";
 
 const AddTasks = () => {
@@ -21,7 +21,6 @@ const AddTasks = () => {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalHeader>Add task</ModalHeader>
-        <ModalCloseButton />
         <ModalBody>
           <TaskForm id={formId} />
         </ModalBody>
