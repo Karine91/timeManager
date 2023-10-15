@@ -46,8 +46,8 @@ export const ColoredModalClosePanel = ({
         outlineOffset: useColorModeValue("0", "2px"),
 
         position: "absolute",
-        top: "-10px",
-        bottom: "-10px",
+        top: "0",
+        bottom: "0",
         right: "-10px",
         boxShadow: useColorModeValue(
           "-11px 0 12px -6px #222121",
@@ -61,11 +61,6 @@ export const ColoredModalClosePanel = ({
 };
 
 const Modal = ({ children, isOpen, onClose, ...otherProps }: IProps) => {
-  const bg = useColorModeValue(
-    "linear(to-br, gray.50, gray.100, gray.100, gray.50)",
-    "linear(to-br, gray.900, gray.800, gray.800, gray.900)"
-  );
-  const brColor = useColorModeValue("black", "white");
   return (
     <ChakraModal isOpen={isOpen} onClose={onClose} {...otherProps}>
       <ModalOverlay />
@@ -76,18 +71,7 @@ const Modal = ({ children, isOpen, onClose, ...otherProps }: IProps) => {
           display: "flex",
           flexDir: "row",
           paddingRight: "40px",
-
-          "&:before": {
-            content: "''",
-            position: "absolute",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            zIndex: -1,
-            filter: "blur(10px)",
-            bgGradient: bg,
-          },
+          boxShadow: "none",
         }}
       >
         <Box sx={{ flexGrow: 1 }}>{children}</Box>
