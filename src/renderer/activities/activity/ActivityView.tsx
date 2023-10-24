@@ -17,14 +17,12 @@ function ActivityView() {
     });
   }, []);
 
-  console.log(activity);
-
   const addTaskHandler = async (data: TaskFormValues) => {
     const updatedData = await window.activitiesApi.createActivityTask({
       ...data,
       activityId: parseInt(id),
     });
-    console.log(updatedData);
+    setActivity(updatedData);
   };
 
   if (!activity) return <>Loading...</>;
@@ -37,8 +35,10 @@ function ActivityView() {
       <Divider />
       <Text>{activity.description}</Text>
       <Box sx={{ py: 4 }}>
-        <TasksList />
         <AddTask addTaskHandler={addTaskHandler} />
+        <Box sx={{ my: 4 }}>
+          <TasksList data={activity.tasks} />
+        </Box>
       </Box>
     </Box>
   );

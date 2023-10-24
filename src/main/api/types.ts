@@ -13,10 +13,12 @@ export type Activity = Prisma.ActivityGetPayload<{
   };
 }>;
 
+export type Task = Prisma.TaskGetPayload<{}>;
+
 export interface IActivitiesApi {
   getActivities: () => Prisma.PrismaPromise<Activity[]>;
   getActivityById: (id: number) => Prisma.PrismaPromise<Activity>;
   createActivityTask: (
     data: Prisma.TaskUncheckedCreateWithoutRecordsInput
-  ) => Prisma.PrismaPromise<Activity>[];
+  ) => Prisma.PrismaPromise<Activity>;
 }
