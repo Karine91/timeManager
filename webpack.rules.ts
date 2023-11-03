@@ -36,7 +36,7 @@ export const rules: Required<ModuleOptions>["rules"] = [
   // SVG
   {
     test: /\.svg$/i,
-    type: "asset",
+    type: "asset/inline",
     resourceQuery: /url/, // *.svg?url
   },
   {

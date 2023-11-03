@@ -1,54 +1,90 @@
 import { Task } from "../../main/api/types";
-import { ListItem, useColorModeValue } from "@chakra-ui/react";
+import { ListItem, useColorModeValue, Box } from "@chakra-ui/react";
 
 const TaskListItem = ({ title, description }: Task) => {
   return (
     <ListItem
       sx={{
-        padding: 2,
-        border: (theme) =>
-          useColorModeValue(
-            `1px solid ${theme.colors.gray[600]}`,
-            `1px solid ${theme.colors.orange[100]}`
-          ),
         marginBottom: (theme) => theme.space[2],
-        paddingLeft: "20px",
-        position: "relative",
-        width: "300px",
-        "&:before": {
-          position: "absolute",
-          content: '""',
-          display: "block",
-          width: "10px",
-          top: 0,
-          bottom: 0,
-          left: 0,
-          background: (theme) =>
-            useColorModeValue(theme.colors.gray[600], theme.colors.orange[100]),
-          opacity: 0.5,
+        display: "flex",
+        "&:hover": {
+          cursor: "pointer",
+          ".main-part, .side-box": {
+            background: (theme) =>
+              useColorModeValue(
+                theme.colors.gray[600],
+                "rgba(255, 188, 115, 0.6)"
+              ),
+          },
+          ".triangle": {
+            fill: (theme) =>
+              useColorModeValue(
+                theme.colors.gray[600],
+                "rgba(255, 188, 115, 0.6)"
+              ),
+          },
         },
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 60%, 95% 100%, 0 100%)",
-        "&:after": {
-          position: "absolute",
-          content: '""',
-          display: "block",
-          top: "41%",
-          bottom: 0,
-          left: "95%",
-          width: "5%",
-          height: "54%",
-          transform: "rotate(43deg)",
-          transformOrigin: "bottom left",
-
+      }}
+    >
+      <Box
+        className="main-part"
+        sx={{
+          padding: 2,
           border: (theme) =>
             useColorModeValue(
               `1px solid ${theme.colors.gray[600]}`,
               `1px solid ${theme.colors.orange[100]}`
             ),
-        },
-      }}
-    >
-      <div>{title}</div>
+          borderRight: "none",
+          width: "calc(100% - 20px)",
+          paddingLeft: "20px",
+          position: "relative",
+          "&:before": {
+            position: "absolute",
+            content: '""',
+            display: "block",
+            width: "10px",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            background: (theme) =>
+              useColorModeValue(
+                theme.colors.gray[600],
+                theme.colors.orange[100]
+              ),
+            opacity: 0.5,
+          },
+        }}
+      >
+        {title}
+      </Box>
+      <Box width={"20px"}>
+        <Box
+          className="side-box"
+          sx={{
+            height: "60%",
+            width: "100%",
+            border: (theme) =>
+              useColorModeValue(
+                `1px solid ${theme.colors.gray[600]}`,
+                `1px solid ${theme.colors.orange[100]}`
+              ),
+            borderLeft: "none",
+            borderBottom: "none",
+          }}
+        />
+        <svg
+          width="100%"
+          height="40%"
+          preserveAspectRatio="none"
+          viewBox="0 0 40 40"
+          strokeWidth={2}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon className="triangle" points="0 40, 40 0, 0 0" fill="none" />
+          <polyline points="0 40, 40 0" fill="none" stroke="white" />
+        </svg>
+      </Box>
     </ListItem>
   );
 };
