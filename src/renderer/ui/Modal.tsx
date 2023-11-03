@@ -48,7 +48,7 @@ export const ColoredModalClosePanel = ({
         position: "absolute",
         top: "0",
         bottom: "0",
-        right: "-10px",
+        right: "-5px",
         boxShadow: useColorModeValue(
           "-11px 0 12px -6px #222121",
           "-11px 0 12px -6px black"

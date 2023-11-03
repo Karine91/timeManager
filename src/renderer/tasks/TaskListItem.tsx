@@ -1,7 +1,8 @@
 import { Task } from "../../main/api/types";
-import { ListItem, useColorModeValue, Box } from "@chakra-ui/react";
+import { ListItem, useColorModeValue, Box, useToken } from "@chakra-ui/react";
 
 const TaskListItem = ({ title, description }: Task) => {
+  const [gray, orange] = useToken("colors", ["gray.600", "orange.100"]);
   return (
     <ListItem
       sx={{
@@ -12,15 +13,22 @@ const TaskListItem = ({ title, description }: Task) => {
           ".main-part, .side-box": {
             background: (theme) =>
               useColorModeValue(
-                theme.colors.gray[600],
-                "rgba(255, 188, 115, 0.6)"
+                "rgba(161, 155, 146, 0.3)",
+                "rgba(237, 137, 54, 0.8)"
               ),
           },
           ".triangle": {
             fill: (theme) =>
               useColorModeValue(
-                theme.colors.gray[600],
-                "rgba(255, 188, 115, 0.6)"
+                "rgba(161, 155, 146, 0.3)",
+                "rgba(237, 137, 54, 0.8)"
+              ),
+          },
+          ".main-part &:before": {
+            background: (theme) =>
+              useColorModeValue(
+                theme.colors.gray[800],
+                theme.colors.orange[400]
               ),
           },
         },
@@ -82,7 +90,11 @@ const TaskListItem = ({ title, description }: Task) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <polygon className="triangle" points="0 40, 40 0, 0 0" fill="none" />
-          <polyline points="0 40, 40 0" fill="none" stroke="white" />
+          <polyline
+            points="0 40, 40 0"
+            fill="none"
+            stroke={useColorModeValue(gray, orange)}
+          />
         </svg>
       </Box>
     </ListItem>

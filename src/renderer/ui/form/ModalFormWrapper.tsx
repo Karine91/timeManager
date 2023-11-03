@@ -40,6 +40,7 @@ const ModalFormWrapper = ({ actions, children }: IProps) => {
         sx={{
           overflow: "hidden",
           padding: "15px",
+          paddingRight: "10px",
           "&:before": {
             content: "''",
             position: "absolute",
