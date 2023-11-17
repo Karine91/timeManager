@@ -18,7 +18,7 @@ function ActivityView() {
   }, []);
 
   const addTaskHandler = async (data: TaskFormValues) => {
-    const updatedData = await window.activitiesApi.createActivityTask({
+    const updatedData = await window.tasksApi.createActivityTask({
       ...data,
       activityId: parseInt(id),
     });

@@ -22,29 +22,9 @@ export const createActivity = (
   return prisma.activity.create({ data });
 };
 
-export const createActivityTask = (
-  event: IpcMainInvokeEvent,
-  { activityId, ...otherData }: Prisma.TaskUncheckedCreateWithoutRecordsInput
-) => {
-  return prisma.activity.update({
-    where: {
-      id: activityId,
-    },
-    data: {
-      tasks: {
-        create: otherData,
-      },
-    },
-    include: {
-      tasks: true,
-    },
-  });
-};
-
 const handleActivitiesApi = () => {
   ipcMain.handle(Activities.GetActivities, getActivities);
   ipcMain.handle(Activities.GetActivityById, getActivity);
-  ipcMain.handle(Activities.CreateActivityTask, createActivityTask);
 };
 
 export default handleActivitiesApi;

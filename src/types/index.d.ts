@@ -1,4 +1,4 @@
-import { IActivitiesApi } from "../main/api/types";
+import { IActivitiesApi, ITasksApi } from "../main/api/types";
 
 declare global {
   interface Window {
@@ -6,5 +6,6 @@ declare global {
       toggle: () => Promise<boolean>;
     };
     activitiesApi: IActivitiesApi;
+    tasksApi: ITasksApi;
   }
 }

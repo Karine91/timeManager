@@ -5,6 +5,7 @@ import { HashRouter, Routes } from "react-router-dom";
 import ActivitiesList from "./activities/ActivitiesList";
 import MainLayout from "./layouts/MainLayout";
 import ActivityView from "./activities/activity/ActivityView";
+import Task from "./tasks/task";
 
 import theme from "./theme";
 import { Route } from "react-router";
@@ -23,6 +24,7 @@ const AppComponent = () => {
           <Route path="/" element={<MainLayout />}>
             <Route element={<ActivitiesList />} index />
             <Route path="/activity/:id" element={<ActivityView />} />
+            <Route path="/activity/:id/:taskId" element={<Task />} />
           </Route>
         </Routes>
       </HashRouter>

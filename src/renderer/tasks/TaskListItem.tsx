@@ -1,14 +1,23 @@
 import { Task } from "../../main/api/types";
+import { useNavigate, useParams } from "react-router-dom";
 import { ListItem, useColorModeValue, Box, useToken } from "@chakra-ui/react";
 
-const TaskListItem = ({ title, description }: Task) => {
+const TaskListItem = ({ title, description, id }: Task) => {
   const [gray, orange] = useToken("colors", ["gray.600", "orange.100"]);
+  const params = useParams();
+  const navigate = useNavigate();
   return (
     <ListItem
+      onClick={() => {
+        console.log(id);
+        navigate(`/activity/${params.id}/${id}`);
+      }}
       sx={{
         marginBottom: (theme) => theme.space[2],
         display: "flex",
+        transition: "transform ease .3s",
         "&:hover": {
+          transform: "translateX(20px)",
           cursor: "pointer",
           ".main-part, .side-box": {
             background: (theme) =>
