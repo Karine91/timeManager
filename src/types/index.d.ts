@@ -1,4 +1,4 @@
-import { IActivitiesApi, ITasksApi } from "../main/api/types";
+import { IActivitiesApi, ITasksApi, IRecordsApi } from "../main/api/types";
 
 declare global {
   interface Window {
@@ -7,5 +7,6 @@ declare global {
     };
     activitiesApi: IActivitiesApi;
     tasksApi: ITasksApi;
+    recordsApi: IRecordsApi;
   }
 }

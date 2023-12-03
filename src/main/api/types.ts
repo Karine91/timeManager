@@ -12,6 +12,10 @@ export const enum Tasks {
   GetTaskById = "get_task_by_id",
 }
 
+export const enum Records {
+  CreateTaskRecord = "create_task_record",
+}
+
 export type Activity = Prisma.ActivityGetPayload<{
   include: {
     tasks: true;
@@ -34,5 +38,11 @@ export interface ITasksApi {
   ) => Prisma.PrismaPromise<Activity>;
   getTaskById: (
     data: IGetTaskByIdData
+  ) => Prisma.PrismaPromise<TaskWithRecords>;
+}
+
+export interface IRecordsApi {
+  createRecord: (
+    data: Prisma.RecordUncheckedCreateInput
   ) => Prisma.PrismaPromise<TaskWithRecords>;
 }

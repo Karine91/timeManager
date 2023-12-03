@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // See the Electron documentation for details on how to use preload scripts:
 import { Prisma } from "@prisma/client";
-import { Activities, Tasks } from "./api/types";
+import { Activities, Tasks, Records } from "./api/types";
 import { System } from "./system/types";
 import { IGetTaskByIdData } from "./api/tasks";
 
@@ -23,4 +23,9 @@ contextBridge.exposeInMainWorld("tasksApi", {
     ipcRenderer.invoke(Tasks.CreateActivityTask, data),
   getTaskById: (data: IGetTaskByIdData) =>
     ipcRenderer.invoke(Tasks.GetTaskById, data),
+});
+
+contextBridge.exposeInMainWorld("recordsApi", {
+  createRecord: (data: Prisma.RecordUncheckedCreateInput) =>
+    ipcRenderer.invoke(Records.CreateTaskRecord, data),
 });
