@@ -53,7 +53,7 @@ export function useTimer() {
   const minutes = formatTime(getMinutes(time));
   const seconds = formatTime(getSeconds(time));
 
-  const endTime = startTime + time * 1000;
+  const endTime = startTime ? startTime + time * 1000 : null;
 
   return {
     hours,
@@ -63,7 +63,7 @@ export function useTimer() {
     onStart,
     onStop,
     time,
-    startTime: new Date(startTime).toISOString(),
-    endTime: new Date(endTime).toISOString(),
+    startTime: startTime && new Date(startTime).toISOString(),
+    endTime: endTime && new Date(endTime).toISOString(),
   };
 }

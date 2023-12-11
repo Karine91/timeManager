@@ -26,6 +26,7 @@ export type Task = Prisma.TaskGetPayload<{}>;
 export type TaskWithRecords = Prisma.TaskGetPayload<{
   include: { records: true };
 }>;
+export type Record = Prisma.RecordGetPayload<{}>;
 
 export interface IActivitiesApi {
   getActivities: () => Prisma.PrismaPromise<Activity[]>;

@@ -1,6 +1,11 @@
 import type { Configuration } from "webpack";
+import path from "path";
 
 import { rules } from "./webpack.rules";
+
+function srcPaths(src: string) {
+  return path.join(__dirname, src);
+}
 
 export const mainConfig: Configuration = {
   /**
@@ -14,5 +19,10 @@ export const mainConfig: Configuration = {
   },
   resolve: {
     extensions: [".js", ".ts", ".jsx", ".tsx", ".css", ".json"],
+    alias: {
+      "@": srcPaths("src"),
+      "@renderer": srcPaths("src/renderer"),
+      "@main": srcPaths("src/main"),
+    },
   },
 };

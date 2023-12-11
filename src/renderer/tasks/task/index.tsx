@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Text, Heading, Box, Button, Flex } from "@chakra-ui/react";
+import { Text, Heading, Box, Button, Flex, List } from "@chakra-ui/react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
+
+import RecordItem from "./RecordItem";
 import { TaskWithRecords } from "../../../main/api/types";
 import { useTimer } from "../../timer/hooks/useTimer";
 
@@ -69,6 +71,11 @@ const Task = () => {
             {hours}:{minutes}:{seconds}
           </Text>
         </Flex>
+        <List>
+          {taskData.records.map((item) => (
+            <RecordItem key={item.id} {...item} />
+          ))}
+        </List>
       </Box>
     </div>
   );
