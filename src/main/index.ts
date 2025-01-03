@@ -23,6 +23,7 @@ const createWindow = (): void => {
     title: "Time tracker",
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      nodeIntegration: false,
     },
   });
 

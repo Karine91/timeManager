@@ -52,7 +52,15 @@ const Task = () => {
       <Heading as="h1">{taskData.title}</Heading>
       <Text>{taskData.description}</Text>
       <Box>
-        <Heading as="h3">Records</Heading>
+        <Heading
+          sx={{
+            fontSize: 21,
+          }}
+          mt={4}
+          as="h3"
+        >
+          Records
+        </Heading>
         <Flex alignItems="center" mt="4">
           <Button
             onClick={onStart}
@@ -71,7 +79,7 @@ const Task = () => {
             {hours}:{minutes}:{seconds}
           </Text>
         </Flex>
-        <List>
+        <List mt="6">
           {taskData.records.map((item) => (
             <RecordItem key={item.id} {...item} />
           ))}
