@@ -4,8 +4,9 @@ import { Text, Heading, Box, Button, Flex, List } from "@chakra-ui/react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
 
 import RecordItem from "./RecordItem";
-import { TaskWithRecords } from "../../../main/api/types";
+import { Record as TimeRecord, TaskWithRecords } from "../../../main/api/types";
 import { useTimer } from "../../timer/hooks/useTimer";
+import { format } from "date-fns/format";
 
 const Task = () => {
   const { taskId, id: activityId } = useParams();
@@ -47,6 +48,12 @@ const Task = () => {
 
   if (!taskData) return;
 
+  const groupedRecords = taskData.records.reduce((acc, cur) => {
+    const date = format(cur.startTime, "dd.MM.yyyy");
+    (acc[date] = acc[date] || []).push(cur);
+    return acc;
+  }, {} as Record<string, TimeRecord[]>);
+
   return (
     <div>
       <Heading as="h1">{taskData.title}</Heading>
@@ -80,8 +87,13 @@ const Task = () => {
           </Text>
         </Flex>
         <List mt="6">
-          {taskData.records.map((item) => (
-            <RecordItem key={item.id} {...item} />
+          {Object.entries(groupedRecords).map(([date, records]) => (
+            <Box mb={2} key={date}>
+              <Box>{date}</Box>
+              {records.map((item) => (
+                <RecordItem key={item.id} {...item} />
+              ))}
+            </Box>
           ))}
         </List>
       </Box>
