@@ -33,5 +33,8 @@ model Record {
   endTime DateTime
   task Task @relation(fields: [taskId], references: [id])
   taskId Int
+  hours Int @default(0)
+  minutes Int @default(0)
+  seconds Int @default(0)
 }
 

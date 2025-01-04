@@ -7,6 +7,7 @@ export const createRecord = (
   event: IpcMainInvokeEvent,
   { taskId, ...otherData }: Prisma.RecordUncheckedCreateInput
 ) => {
+  console.log(otherData);
   return prisma.task.update({
     where: {
       id: taskId,
