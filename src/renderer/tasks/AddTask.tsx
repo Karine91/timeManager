@@ -1,29 +1,28 @@
-import { Button, useDisclosure } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import Modal from "../ui/Modal";
+
+import ButtonModal from "../common/forms/ButtonModal";
 import TaskForm, { TaskFormValues } from "./TaskForm";
 
 interface IProps {
-  addTaskHandler: (data: TaskFormValues) => void;
+  addTaskHandler: (data: TaskFormValues) => Promise<void>;
 }
 
 const AddTasks = ({ addTaskHandler }: IProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const addTask = async (data: TaskFormValues) => {
+  const addTask = async (data: TaskFormValues, onClose: () => void) => {
     await addTaskHandler(data);
     onClose();
   };
 
   return (
-    <>
-      <Button onClick={onOpen} leftIcon={<AddIcon />}>
-        Create task
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <TaskForm onClose={onClose} onSubmit={addTask} />
-      </Modal>
-    </>
+    <ButtonModal buttonText="Create task" leftIcon={<AddIcon />}>
+      {onClose => (
+        <TaskForm
+          header="Add task"
+          onClose={onClose}
+          onSubmit={data => addTask(data, onClose)}
+        />
+      )}
+    </ButtonModal>
   );
 };
 

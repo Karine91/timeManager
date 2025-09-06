@@ -1,8 +1,9 @@
-import type { Configuration } from "webpack";
 import path from "path";
 
-import { rules } from "./webpack.rules";
+import type { Configuration } from "webpack";
+
 import { plugins } from "./webpack.plugins";
+import { rules } from "./webpack.rules";
 
 function srcPaths(src: string) {
   return path.join(__dirname, src);

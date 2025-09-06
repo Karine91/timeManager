@@ -1,6 +1,7 @@
-import { Task } from "../../main/api/types";
-import { useNavigate, useParams } from "react-router-dom";
 import { ListItem, useColorModeValue, Box, useToken } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { Task } from "../../main/api/types";
 import CyberpunkItem from "../ui/CyberpunkItem";
 
 const TaskListItem = ({ title, description, id }: Task) => {

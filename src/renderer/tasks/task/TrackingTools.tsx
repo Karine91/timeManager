@@ -1,12 +1,13 @@
+import { TriangleDownIcon } from "@chakra-ui/icons";
+import { Text, Heading, Box, Button, Flex, List } from "@chakra-ui/react";
+import { format } from "date-fns/format";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Text, Heading, Box, Button, Flex, List } from "@chakra-ui/react";
-import { TriangleDownIcon } from "@chakra-ui/icons";
 
-import RecordItem from "./RecordItem";
 import { Record as TimeRecord, TaskWithRecords } from "../../../main/api/types";
 import { useTimer } from "../../timer/hooks/useTimer";
-import { format } from "date-fns/format";
+
+import RecordItem from "./RecordItem";
 
 const TrackingTools = () => {
   const { taskId, id: activityId } = useParams();

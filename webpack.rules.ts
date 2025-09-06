@@ -1,7 +1,6 @@
 import type { ModuleOptions } from "webpack";
 
 export const rules: Required<ModuleOptions>["rules"] = [
-  
   {
     test: /\.prisma/,
     type: "asset/resource",

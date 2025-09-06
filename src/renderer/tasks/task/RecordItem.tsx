@@ -1,8 +1,10 @@
-import React from "react";
-import CyberpunkItem from "@renderer/ui/CyberpunkItem";
-import { format, intervalToDuration, formatDuration } from "date-fns";
-import { Record } from "../../../main/api/types";
 import { Box, Flex } from "@chakra-ui/react";
+import { format, intervalToDuration, formatDuration } from "date-fns";
+import React from "react";
+
+import CyberpunkItem from "@renderer/ui/CyberpunkItem";
+
+import { Record } from "../../../main/api/types";
 
 const RecordItem = ({
   description,

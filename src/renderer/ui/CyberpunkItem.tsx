@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ListItem,
   useColorModeValue,
@@ -6,6 +5,7 @@ import {
   useToken,
   ListItemProps,
 } from "@chakra-ui/react";
+import React from "react";
 
 const CyberpunkItem = ({
   children,
@@ -21,20 +21,20 @@ const CyberpunkItem = ({
   return (
     <ListItem
       sx={{
-        marginBottom: (theme) => theme.space[2],
+        marginBottom: theme => theme.space[2],
         display: "flex",
         transition: "transform ease .3s",
         "&:hover": {
           transform: "translateX(20px)",
           cursor: "pointer",
           ".main-part, .side-box": {
-            background: (theme) => useColorModeValue(...bgHoverColor),
+            background: theme => useColorModeValue(...bgHoverColor),
           },
           ".triangle": {
-            fill: (theme) => useColorModeValue(...bgHoverColor),
+            fill: theme => useColorModeValue(...bgHoverColor),
           },
           ".main-part &:before": {
-            background: (theme) =>
+            background: theme =>
               useColorModeValue(
                 theme.colors.gray[800],
                 theme.colors.orange[400]
@@ -49,7 +49,7 @@ const CyberpunkItem = ({
         className="main-part"
         sx={{
           padding: 2,
-          border: (theme) =>
+          border: theme =>
             useColorModeValue(
               `1px solid ${theme.colors.gray[600]}`,
               `1px solid ${theme.colors.orange[100]}`
@@ -66,7 +66,7 @@ const CyberpunkItem = ({
             top: 0,
             bottom: 0,
             left: 0,
-            background: (theme) =>
+            background: theme =>
               useColorModeValue(
                 theme.colors.gray[600],
                 theme.colors.orange[100]
@@ -83,7 +83,7 @@ const CyberpunkItem = ({
           sx={{
             height: "calc(100% - 20px)",
             width: "100%",
-            border: (theme) =>
+            border: theme =>
               useColorModeValue(
                 `1px solid ${theme.colors.gray[600]}`,
                 `1px solid ${theme.colors.orange[100]}`

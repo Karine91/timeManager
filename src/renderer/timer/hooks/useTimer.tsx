@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
+
 import { getHours, getMinutes, getSeconds } from "../utils";
 
 export function useTimer() {
-  const timerRef = React.useRef<any>();
+  const timerRef = React.useRef<null | NodeJS.Timeout>(null);
   const [time, setTime] = React.useState(0); // time in seconds
   const [startTime, setStartTime] = React.useState(null);
   const [isRunning, setRunning] = React.useState(false);
@@ -29,7 +30,7 @@ export function useTimer() {
       setRunning(true);
       setStartTime(Date.now());
       timerRef.current = setInterval(() => {
-        setTime((time) => time + 1);
+        setTime(time => time + 1);
       }, 1000);
     }
   };

@@ -1,6 +1,8 @@
-import prisma from "../prisma";
-import { ipcMain, IpcMainInvokeEvent } from "electron";
 import { Prisma } from "@prisma/client";
+import { ipcMain, IpcMainInvokeEvent } from "electron";
+
+import prisma from "../prisma";
+
 import { Activities } from "./types";
 
 export const getActivities = () => {

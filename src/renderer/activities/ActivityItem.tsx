@@ -1,7 +1,8 @@
-import React from "react";
-import { Activity } from "../../main/api/types";
 import { Flex, Text, Box, useColorModeValue } from "@chakra-ui/react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+
+import { Activity } from "../../main/api/types";
 
 const ActivityItem = ({ title, id }: Activity) => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const ActivityItem = ({ title, id }: Activity) => {
           borderRadius: 16,
           bg: "orange.400",
           height: 150,
-          padding: (theme) => theme.space[4],
+          padding: theme => theme.space[4],
           transition: "transform ease .3s",
           outlineColor: "orange.400",
           outlineWidth: "5px",
@@ -62,8 +63,8 @@ const ActivityItem = ({ title, id }: Activity) => {
       >
         <Text
           sx={{
-            fontSize: (theme) => theme.fontSizes["4xl"],
-            fontWeight: (theme) => theme.fontWeights.black,
+            fontSize: theme => theme.fontSizes["4xl"],
+            fontWeight: theme => theme.fontWeights.black,
           }}
         >
           {title}

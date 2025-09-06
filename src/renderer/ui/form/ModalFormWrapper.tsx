@@ -6,17 +6,19 @@ import {
   useColorModeValue,
   useToken,
 } from "@chakra-ui/react";
-import { ColoredModalClosePanel, PanelVariant } from "../Modal";
 import { useFormikContext } from "formik";
+
+import { ColoredModalClosePanel, PanelVariant } from "../Modal";
 
 interface IProps {
   actions: React.ReactNode;
   children: React.ReactNode;
+  header: React.ReactNode;
 }
 
 const SLIDE_IN_ANIMATION_DURATION = ".5s";
 
-const ModalFormWrapper = ({ actions, children }: IProps) => {
+const ModalFormWrapper = ({ actions, children, header }: IProps) => {
   const { isValid, isSubmitting } = useFormikContext();
   const [red500] = useToken("colors", ["red.500"]);
   const brColor = isValid ? useColorModeValue("black", "white") : red500;
@@ -32,8 +34,8 @@ const ModalFormWrapper = ({ actions, children }: IProps) => {
           !isValid
             ? PanelVariant.Error
             : isSubmitting
-            ? PanelVariant.Success
-            : PanelVariant.Regular
+              ? PanelVariant.Success
+              : PanelVariant.Regular
         }
       />
       <Box
@@ -85,7 +87,7 @@ const ModalFormWrapper = ({ actions, children }: IProps) => {
             },
           }}
         >
-          <ModalHeader>Add task</ModalHeader>
+          <ModalHeader>{header}</ModalHeader>
           <ModalBody>{children}</ModalBody>
 
           <ModalFooter>{actions}</ModalFooter>

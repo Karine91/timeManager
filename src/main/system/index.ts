@@ -1,4 +1,5 @@
 import { nativeTheme, ipcMain } from "electron";
+
 import { System } from "./types";
 
 nativeTheme.themeSource = "dark";

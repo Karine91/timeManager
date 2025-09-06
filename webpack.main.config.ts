@@ -1,5 +1,6 @@
-import type { Configuration } from "webpack";
 import path from "path";
+
+import type { Configuration } from "webpack";
 
 import { rules } from "./webpack.rules";
 

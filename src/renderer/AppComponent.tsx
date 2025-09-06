@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
 import { ChakraBaseProvider } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Route } from "react-router";
 import { HashRouter, Routes } from "react-router-dom";
 
 import ActivitiesList from "./activities/ActivitiesList";
-import MainLayout from "./layouts/MainLayout";
 import ActivityView from "./activities/activity/ActivityView";
+import MainLayout from "./layouts/MainLayout";
 import Task from "./tasks/task";
-
 import theme from "./theme";
-import { Route } from "react-router";
 
 const AppComponent = () => {
   useEffect(() => {
@@ -25,6 +24,7 @@ const AppComponent = () => {
             <Route element={<ActivitiesList />} index />
             <Route path="/activity/:id" element={<ActivityView />} />
             <Route path="/activity/:id/:taskId" element={<Task />} />
+            <Route path="/settings" element={<div>Settings</div>} />
           </Route>
         </Routes>
       </HashRouter>

@@ -1,6 +1,6 @@
 import handleActivitiesApi from "./activities";
-import handleTasksApi from "./tasks";
 import handleRecordsApi from "./records";
+import handleTasksApi from "./tasks";
 
 export default () => {
   handleActivitiesApi();

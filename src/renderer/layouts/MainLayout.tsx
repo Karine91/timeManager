@@ -1,5 +1,4 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import {
   Box,
   useColorModeValue,
@@ -9,7 +8,9 @@ import {
   Container,
   Text,
 } from "@chakra-ui/react";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import React from "react";
+import { Outlet } from "react-router-dom";
+
 import NavPanel from "../NavPanel";
 
 const MainLayout = () => {

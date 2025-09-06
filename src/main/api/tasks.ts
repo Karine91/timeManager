@@ -1,6 +1,8 @@
-import prisma from "../prisma";
-import { ipcMain, IpcMainInvokeEvent } from "electron";
 import { Prisma } from "@prisma/client";
+import { ipcMain, IpcMainInvokeEvent } from "electron";
+
+import prisma from "../prisma";
+
 import { Tasks, TaskWithRecords } from "./types";
 
 export const createActivityTask = (

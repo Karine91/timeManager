@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import { IGetTaskByIdData } from "./tasks";
 
 export const enum Activities {

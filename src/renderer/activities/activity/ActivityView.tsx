@@ -1,18 +1,18 @@
+import { Text, Box, Divider } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Text, Box, Divider } from "@chakra-ui/react";
 
 import { Activity } from "../../../main/api/types";
-import TasksList from "../../tasks/TasksList";
 import AddTask from "../../tasks/AddTask";
 import { TaskFormValues } from "../../tasks/TaskForm";
+import TasksList from "../../tasks/TasksList";
 
 function ActivityView() {
   const { id } = useParams();
   const [activity, setActivity] = useState<Activity>();
 
   useEffect(() => {
-    window.activitiesApi.getActivityById(parseInt(id)).then((data) => {
+    window.activitiesApi.getActivityById(parseInt(id)).then(data => {
       setActivity(data);
     });
   }, []);
