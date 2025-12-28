@@ -6,6 +6,7 @@ export const enum Activities {
   GetActivities = "get_activities",
   CreateActivity = "create_activity",
   GetActivityById = "get_activity_by_id",
+  DeleteActivity = "delete_activity",
 }
 
 export const enum Tasks {
@@ -32,6 +33,10 @@ export type Record = Prisma.RecordGetPayload<{}>;
 export interface IActivitiesApi {
   getActivities: () => Prisma.PrismaPromise<Activity[]>;
   getActivityById: (id: number) => Prisma.PrismaPromise<Activity>;
+  createActivity: (
+    data: Prisma.ActivityCreateWithoutTasksInput
+  ) => Prisma.PrismaPromise<Activity>;
+  deleteActivity: (id: number) => Prisma.PrismaPromise<[number, number]>;
 }
 
 export interface ITasksApi {

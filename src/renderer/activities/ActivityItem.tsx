@@ -1,14 +1,30 @@
-import { Flex, Text, Box, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Box,
+  useColorModeValue,
+  IconButton,
+} from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Activity } from "../../main/api/types";
 
-const ActivityItem = ({ title, id }: Activity) => {
+interface ActivityItemProps extends Activity {
+  onDelete: (id: number) => void;
+}
+
+const ActivityItem = ({ title, id, onDelete }: ActivityItemProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/activity/${id}`);
+  };
+
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onDelete(id);
   };
 
   return (
@@ -51,7 +67,7 @@ const ActivityItem = ({ title, id }: Activity) => {
           borderRadius: 16,
           bg: "orange.400",
           height: 150,
-          padding: theme => theme.space[4],
+
           transition: "transform ease .3s",
           outlineColor: "orange.400",
           outlineWidth: "5px",
@@ -59,6 +75,9 @@ const ActivityItem = ({ title, id }: Activity) => {
           outlineOffset: "4px",
           border: "1px solid white",
         }}
+        pt={8}
+        px={4}
+        pb={4}
         onClick={handleClick}
       >
         <Text
@@ -69,6 +88,12 @@ const ActivityItem = ({ title, id }: Activity) => {
         >
           {title}
         </Text>
+        <IconButton
+          sx={{ position: "absolute", top: 0, right: 0 }}
+          aria-label="Delete Activity"
+          icon={<CloseIcon />}
+          onClick={handleDelete}
+        />
       </Flex>
     </Box>
   );

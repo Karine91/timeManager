@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld("activitiesApi", {
     ipcRenderer.invoke(Activities.GetActivityById, id),
   createActivity: (data: Prisma.ActivityCreateWithoutTasksInput) =>
     ipcRenderer.invoke(Activities.CreateActivity, data),
+  deleteActivity: (id: number) =>
+    ipcRenderer.invoke(Activities.DeleteActivity, id),
 });
 
 contextBridge.exposeInMainWorld("tasksApi", {

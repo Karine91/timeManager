@@ -2,9 +2,10 @@ import { AddIcon } from "@chakra-ui/icons";
 
 import ButtonModal from "../../common/forms/ButtonModal";
 import TaskForm, { TaskFormValues } from "../../tasks/TaskForm";
+import { Activity } from "@/main/api/types";
 
 interface IProps {
-  addActivityHandler: (data: TaskFormValues) => Promise<void>;
+  addActivityHandler: (data: TaskFormValues) => Promise<unknown>;
 }
 
 const AddActivity = ({ addActivityHandler }: IProps) => {

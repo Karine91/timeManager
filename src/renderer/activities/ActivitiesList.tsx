@@ -1,11 +1,11 @@
-import { AddIcon } from "@chakra-ui/icons";
 import { Heading, SimpleGrid, Text, Button } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Activity } from "../../main/api/types";
 
 import ActivityItem from "./ActivityItem";
 import AddActivity from "./activity/AddActivity";
+import { TaskFormValues } from "../tasks/TaskForm";
 
 const ActivitiesList = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -16,9 +16,16 @@ const ActivitiesList = () => {
     });
   }, []);
 
-  const handleCreateActivity = () => {
-    console.log("create activity");
-    return Promise.resolve();
+  const handleCreateActivity = (data: TaskFormValues) => {
+    return window.activitiesApi.createActivity(data).then(newData => {
+      setActivities(prev => [...prev, newData]);
+    });
+  };
+
+  const handleDeleteActivity = (id: number) => {
+    return window.activitiesApi.deleteActivity(id).then(data => {
+      setActivities(prev => prev.filter(activity => activity.id !== id));
+    });
   };
 
   return (
@@ -27,9 +34,13 @@ const ActivitiesList = () => {
         Activities
       </Heading>
       <AddActivity addActivityHandler={handleCreateActivity} />
-      <SimpleGrid columns={activities.length} spacing={8}>
+      <SimpleGrid my={5} columns={activities.length} spacing={8}>
         {activities.map(item => (
-          <ActivityItem key={item.id} {...item} />
+          <ActivityItem
+            key={item.id}
+            {...item}
+            onDelete={handleDeleteActivity}
+          />
         ))}
       </SimpleGrid>
     </>
