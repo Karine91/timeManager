@@ -8,6 +8,7 @@ import ActivityView from "./activities/activity/ActivityView";
 import MainLayout from "./layouts/MainLayout";
 import Task from "./tasks/task";
 import theme from "./theme";
+import PageLayout from "./layouts/PageLayout";
 
 const AppComponent = () => {
   useEffect(() => {
@@ -22,8 +23,10 @@ const AppComponent = () => {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route element={<ActivitiesList />} index />
-            <Route path="/activity/:id" element={<ActivityView />} />
-            <Route path="/activity/:id/:taskId" element={<Task />} />
+            <Route element={<PageLayout />}>
+              <Route path="/activity/:id" element={<ActivityView />} />
+              <Route path="/activity/:id/:taskId" element={<Task />} />
+            </Route>
             <Route path="/settings" element={<div>Settings</div>} />
           </Route>
         </Routes>
