@@ -45,6 +45,7 @@ export const getTaskById = (
           },
           include: {
             records: true,
+            cycleItems: true,
           },
         },
       },
@@ -52,9 +53,19 @@ export const getTaskById = (
     .then((data: { tasks: TaskWithRecords[] }) => data.tasks[0]);
 };
 
+export const getTasksByActivityId = (
+  event: IpcMainInvokeEvent,
+  activityId: number
+) => {
+  return prisma.task.findMany({
+    where: { activityId },
+  });
+};
+
 const handleTasksApi = () => {
   ipcMain.handle(Tasks.CreateActivityTask, createActivityTask);
   ipcMain.handle(Tasks.GetTaskById, getTaskById);
+  ipcMain.handle(Tasks.GetTasksByActivityId, getTasksByActivityId);
 };
 
 export default handleTasksApi;

@@ -27,6 +27,8 @@ contextBridge.exposeInMainWorld("tasksApi", {
     ipcRenderer.invoke(Tasks.CreateActivityTask, data),
   getTaskById: (data: IGetTaskByIdData) =>
     ipcRenderer.invoke(Tasks.GetTaskById, data),
+  getTasksByActivityId: (activityId: number) =>
+    ipcRenderer.invoke(Tasks.GetTasksByActivityId, activityId),
 });
 
 contextBridge.exposeInMainWorld("recordsApi", {

@@ -21,10 +21,23 @@ model Task {
   id Int @id @default(autoincrement())
   title String
   description String?
+  completedAt DateTime?
+  startDate DateTime @default(now())
+  endDate DateTime?
   records Record[]
   activity Activity @relation(fields: [activityId], references: [id])
   activityId Int
+  daysOfWeekRepeat Json?
+  cycleItems CycleItem[]
 }
+
+model CycleItem {
+  id Int @id @default(autoincrement())
+  title String
+  task Task @relation(fields: [taskId], references: [id])
+  taskId Int
+}
+
 
 model Record {
   id Int @id @default(autoincrement())

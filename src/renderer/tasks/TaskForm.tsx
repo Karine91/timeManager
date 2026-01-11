@@ -2,15 +2,16 @@ import { Button } from "@chakra-ui/react";
 import { Formik, Form, FormikHelpers } from "formik";
 import { useId } from "react";
 import * as Yup from "yup";
+import { Prisma } from "@prisma/client";
 
 import FieldInput from "../ui/form/FieldInput";
 import FieldTextArea from "../ui/form/FieldTextArea";
 import ModalFormWrapper from "../ui/form/ModalFormWrapper";
 
-export interface TaskFormValues {
-  title: string;
-  description: string;
-}
+export type TaskFormValues = Omit<
+  Prisma.TaskUncheckedCreateWithoutRecordsInput,
+  "activityId"
+>;
 
 const TaskSchema = Yup.object().shape({
   title: Yup.string().required("Required!").max(64, "Too long"),
@@ -57,7 +58,12 @@ const TaskForm = ({ onClose, onSubmit, header }: IProps) => {
             }
           >
             <FieldInput mb={2} name="title" label="Title:" />
-            <FieldTextArea name="description" label="Description:" rows={1} />
+            <FieldTextArea
+              mb={2}
+              name="description"
+              label="Description:"
+              rows={1}
+            />
           </ModalFormWrapper>
         </Form>
       )}

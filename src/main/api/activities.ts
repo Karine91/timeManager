@@ -6,11 +6,7 @@ import prisma from "../prisma";
 import { Activities } from "./types";
 
 export const getActivities = (event: IpcMainInvokeEvent) => {
-  return prisma.activity.findMany({
-    include: {
-      tasks: true,
-    },
-  });
+  return prisma.activity.findMany();
 };
 
 export const getActivity = (event: IpcMainInvokeEvent, id: number) => {

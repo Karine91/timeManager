@@ -1,17 +1,28 @@
 import { List } from "@chakra-ui/react";
-
+import { useEffect, useState } from "react";
 import { Task } from "../../main/api/types";
 
 import TaskListItem from "./TaskListItem";
+import Loading from "../common/Loading";
 
 interface IProps {
-  data: Task[];
+  activityId: number;
 }
 
-const TasksList = ({ data }: IProps) => {
+const TasksList = ({ activityId }: IProps) => {
+  const [tasks, setTasks] = useState<Task[]>();
+
+  useEffect(() => {
+    window.tasksApi.getTasksByActivityId(activityId).then(data => {
+      setTasks(data);
+    });
+  }, []);
+
+  if (!tasks) return <Loading />;
+
   return (
     <List>
-      {data.map(item => (
+      {tasks.map(item => (
         <TaskListItem key={item.id} {...item} />
       ))}
     </List>

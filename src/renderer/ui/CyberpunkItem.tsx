@@ -10,8 +10,9 @@ import React from "react";
 const CyberpunkItem = ({
   children,
   sx,
+  disabled,
   ...restProps
-}: { children: React.ReactNode } & ListItemProps) => {
+}: { children: React.ReactNode; disabled?: boolean } & ListItemProps) => {
   const [gray, orange] = useToken("colors", ["gray.600", "orange.100"]);
   const bgHoverColor: [string, string] = [
     "rgba(161, 155, 146, 0.3)",
@@ -24,7 +25,7 @@ const CyberpunkItem = ({
         marginBottom: theme => theme.space[2],
         display: "flex",
         transition: "transform ease .3s",
-        "&:hover": {
+        "&:hover": !disabled && {
           transform: "translateX(20px)",
           cursor: "pointer",
           ".main-part, .side-box": {

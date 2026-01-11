@@ -6,6 +6,7 @@ import { Activity } from "../../../main/api/types";
 import AddTask from "../../tasks/AddTask";
 import { TaskFormValues } from "../../tasks/TaskForm";
 import TasksList from "../../tasks/TasksList";
+import Loading from "@/renderer/common/Loading";
 
 function ActivityView() {
   const { id } = useParams();
@@ -25,7 +26,7 @@ function ActivityView() {
     setActivity(updatedData);
   };
 
-  if (!activity) return <>Loading...</>;
+  if (!activity) return <Loading />;
 
   return (
     <Box>
@@ -37,7 +38,7 @@ function ActivityView() {
       <Box sx={{ py: 4 }}>
         <AddTask addTaskHandler={addTaskHandler} />
         <Box sx={{ my: 4 }}>
-          <TasksList data={activity.tasks} />
+          <TasksList activityId={parseInt(id)} />
         </Box>
       </Box>
     </Box>

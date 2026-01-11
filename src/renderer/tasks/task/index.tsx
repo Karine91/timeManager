@@ -7,6 +7,8 @@ import { Record as TimeRecord, TaskWithRecords } from "../../../main/api/types";
 
 import RecordItem from "./RecordItem";
 import TrackingTools from "./TrackingTools";
+import CyberpunkItem from "@/renderer/ui/CyberpunkItem";
+import Loading from "@/renderer/common/Loading";
 
 const Task = () => {
   const { taskId, id: activityId } = useParams();
@@ -23,12 +25,13 @@ const Task = () => {
       });
   }, []);
 
-  console.log(taskData);
+  if (!taskData) return <Loading />;
 
-  if (!taskData) return;
+  console.log(taskData);
+  const { records, description, title, cycleItems, startDate } = taskData;
 
   // recalculated on every millisecond, so need to move counter to separate component
-  const groupedRecords = taskData.records.reduce(
+  const groupedRecords = records.reduce(
     (acc, cur) => {
       const date = format(cur.startTime, "dd.MM.yyyy");
       (acc[date] = acc[date] || []).push(cur);
@@ -39,8 +42,24 @@ const Task = () => {
 
   return (
     <div>
-      <Heading as="h1">{taskData.title}</Heading>
-      <Text>{taskData.description}</Text>
+      <Heading as="h1">{title}</Heading>
+      <Text>{description}</Text>
+      {cycleItems.length && (
+        <Box>
+          <Heading size="md">
+            Start date: {format(startDate, "dd.MM.yyyy")}
+          </Heading>
+          <List mt={3}>
+            <Box pl={5}>
+              {cycleItems.map(item => (
+                <CyberpunkItem key={item.id} disabled>
+                  {item.title}
+                </CyberpunkItem>
+              ))}
+            </Box>
+          </List>
+        </Box>
+      )}
       <TrackingTools />
       <Box>
         <List mt="6">
