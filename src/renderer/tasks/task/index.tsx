@@ -1,18 +1,28 @@
-import { Box, Heading, List, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, List, Text } from "@chakra-ui/react";
 import { format } from "date-fns/format";
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Record as TimeRecord, TaskWithRecords } from "../../../main/api/types";
+import {
+  Record as TimeRecord,
+  TaskWithRecords,
+  CycleItem,
+} from "../../../main/api/types";
 
 import RecordItem from "./RecordItem";
 import TrackingTools from "./TrackingTools";
 import CyberpunkItem from "@/renderer/ui/CyberpunkItem";
 import Loading from "@/renderer/common/Loading";
+import { getNextCycleItem } from "../utils";
 
 const Task = () => {
   const { taskId, id: activityId } = useParams();
   const [taskData, setTaskData] = useState<TaskWithRecords>();
+  const [nextCycleItem, setNextItem] = useState<{
+    item: CycleItem;
+    date: Date;
+  } | null>(null);
 
   useEffect(() => {
     window.tasksApi
@@ -22,13 +32,26 @@ const Task = () => {
       })
       .then(data => {
         setTaskData(data);
+        const nextCycleItem = getNextCycleItem({
+          items: data.cycleItems,
+          startDate: data.startDate,
+          daysOfWeekRepeat: data.daysOfWeekRepeat,
+        });
+        setNextItem(nextCycleItem);
       });
   }, []);
 
   if (!taskData) return <Loading />;
 
-  console.log(taskData);
-  const { records, description, title, cycleItems, startDate } = taskData;
+  console.log(taskData, nextCycleItem);
+  const {
+    records,
+    description,
+    title,
+    cycleItems,
+    startDate,
+    daysOfWeekRepeat,
+  } = taskData;
 
   // recalculated on every millisecond, so need to move counter to separate component
   const groupedRecords = records.reduce(
@@ -51,11 +74,19 @@ const Task = () => {
           </Heading>
           <List mt={3}>
             <Box pl={5}>
-              {cycleItems.map(item => (
-                <CyberpunkItem key={item.id} disabled>
-                  {item.title}
-                </CyberpunkItem>
-              ))}
+              {cycleItems.map(item => {
+                const active = item.id == nextCycleItem.item.id;
+                return (
+                  <CyberpunkItem key={item.id} active={active} disabled>
+                    <Flex justifyContent="space-between">
+                      {item.title}
+                      {active && (
+                        <Text>{format(nextCycleItem.date, "dd.MM.yyyy")}</Text>
+                      )}
+                    </Flex>
+                  </CyberpunkItem>
+                );
+              })}
             </Box>
           </List>
         </Box>

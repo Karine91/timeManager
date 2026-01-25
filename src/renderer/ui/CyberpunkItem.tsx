@@ -4,20 +4,26 @@ import {
   Box,
   useToken,
   ListItemProps,
+  useTheme,
 } from "@chakra-ui/react";
 import React from "react";
+
+type CyberpunkItemProps = {
+  children: React.ReactNode;
+  disabled?: boolean;
+  active?: boolean;
+} & ListItemProps;
 
 const CyberpunkItem = ({
   children,
   sx,
   disabled,
+  active,
   ...restProps
-}: { children: React.ReactNode; disabled?: boolean } & ListItemProps) => {
-  const [gray, orange] = useToken("colors", ["gray.600", "orange.100"]);
-  const bgHoverColor: [string, string] = [
-    "rgba(161, 155, 146, 0.3)",
-    "rgba(237, 137, 54, 0.8)",
-  ];
+}: CyberpunkItemProps) => {
+  const [gray, orange] = useToken("colors", ["gray.800", "orange.400"]);
+  const bgHoverColor: [string, string] = [gray, orange];
+  const theme = useTheme();
 
   return (
     <ListItem
@@ -28,20 +34,24 @@ const CyberpunkItem = ({
         "&:hover": !disabled && {
           transform: "translateX(20px)",
           cursor: "pointer",
-          ".main-part, .side-box": {
+          ".main-part, .side-box, .main-part &:before": {
             background: theme => useColorModeValue(...bgHoverColor),
           },
           ".triangle": {
             fill: theme => useColorModeValue(...bgHoverColor),
           },
-          ".main-part &:before": {
-            background: theme =>
-              useColorModeValue(
-                theme.colors.gray[800],
-                theme.colors.orange[400]
-              ),
-          },
         },
+        ...(active
+          ? {
+              fontWeight: "bold",
+              ".main-part, .side-box, .main-part &:before": {
+                background: theme => useColorModeValue(...bgHoverColor),
+              },
+              ".triangle": {
+                fill: theme => useColorModeValue(...bgHoverColor),
+              },
+            }
+          : {}),
         ...sx,
       }}
       {...restProps}
@@ -105,7 +115,10 @@ const CyberpunkItem = ({
           <polyline
             points="0 40, 40 0"
             fill="none"
-            stroke={useColorModeValue(gray, orange)}
+            stroke={useColorModeValue(
+              theme.colors.gray[600],
+              theme.colors.orange[100]
+            )}
           />
         </svg>
       </Box>

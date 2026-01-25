@@ -21,13 +21,17 @@ export const enum Records {
 
 export type Activity = Prisma.ActivityGetPayload<{}>;
 
-export type Task = Prisma.TaskGetPayload<{}> & {
+export type Task<T = {}> = Omit<
+  Prisma.TaskGetPayload<T>,
+  "daysOfWeekRepeat"
+> & {
   daysOfWeekRepeat: number[];
 };
-export type TaskWithRecords = Prisma.TaskGetPayload<{
+export type TaskWithRecords = Task<{
   include: { records: true; cycleItems: true };
 }>;
 export type Record = Prisma.RecordGetPayload<{}>;
+export type CycleItem = Prisma.CycleItemGetPayload<{}>;
 
 export interface IActivitiesApi {
   getActivities: () => Prisma.PrismaPromise<Activity[]>;
