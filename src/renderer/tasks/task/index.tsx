@@ -1,22 +1,16 @@
 import { Box, Flex, Heading, List, Text } from "@chakra-ui/react";
 import { format } from "date-fns/format";
-import { formatDuration } from "date-fns/formatDuration";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  Record as TimeRecord,
-  TaskWithRecords,
-  CycleItem,
-} from "../../../main/api/types";
+import { TaskWithRecords, CycleItem } from "../../../main/api/types";
 
-import RecordItem from "./RecordItem";
-import TrackingTools from "./TrackingTools";
 import CyberpunkItem from "@/renderer/ui/CyberpunkItem";
 import Loading from "@/renderer/common/Loading";
 import { getNextCycleItem } from "../utils";
 import { formatDistance } from "date-fns/formatDistance";
+import RecordsSection from "./records/RecordsSection";
 
 const Task = () => {
   const { taskId, id: activityId } = useParams();
@@ -55,16 +49,6 @@ const Task = () => {
     daysOfWeekRepeat,
   } = taskData;
 
-  // recalculated on every millisecond, so need to move counter to separate component
-  const groupedRecords = records.reduce(
-    (acc, cur) => {
-      const date = format(cur.startTime, "dd.MM.yyyy");
-      (acc[date] = acc[date] || []).push(cur);
-      return acc;
-    },
-    {} as Record<string, TimeRecord[]>
-  );
-
   const duration = formatDistance(Date.now(), startDate.getTime());
 
   return (
@@ -99,19 +83,7 @@ const Task = () => {
           </List>
         </Box>
       )}
-      <TrackingTools />
-      <Box>
-        <List mt="6">
-          {Object.entries(groupedRecords).map(([date, records]) => (
-            <Box mb={2} key={date}>
-              <Box>{date}</Box>
-              {records.map(item => (
-                <RecordItem key={item.id} {...item} />
-              ))}
-            </Box>
-          ))}
-        </List>
-      </Box>
+      <RecordsSection taskRecords={taskData.records} />
     </div>
   );
 };

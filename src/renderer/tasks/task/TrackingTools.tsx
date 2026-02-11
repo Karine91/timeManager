@@ -9,7 +9,11 @@ import { useTimer } from "../../timer/hooks/useTimer";
 
 import RecordItem from "./RecordItem";
 
-const TrackingTools = () => {
+const TrackingTools = ({
+  onAddRecord,
+}: {
+  onAddRecord: (records: TimeRecord[]) => void;
+}) => {
   const { taskId, id: activityId } = useParams();
   const {
     onStart,
@@ -23,9 +27,9 @@ const TrackingTools = () => {
     endTime,
   } = useTimer();
 
-  const handleStop = () => {
+  const handleStop = async () => {
     //save record to db;
-    window.recordsApi.createRecord({
+    const updatedTask = await window.recordsApi.createRecord({
       startTime,
       endTime,
       hours: Number(hours),
@@ -34,6 +38,8 @@ const TrackingTools = () => {
       taskId: parseInt(taskId),
     });
     onStop();
+    //update records list
+    onAddRecord(updatedTask.records);
   };
   return (
     <>
