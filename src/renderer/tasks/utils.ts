@@ -27,8 +27,6 @@ export function getNextCycleItem<T>({
   const fullCycleDays = (items.length / daysOfWeekRepeat.length) * 7;
   const daysLeft = daysPast % fullCycleDays;
 
-  console.log({ today, daysPast, fullCycleDays, daysLeft });
-
   if (daysLeft == 0) return { item: items[0], date: today };
 
   const dateOfLatestCycleBegin = subDays(today, daysLeft - 1);
@@ -36,8 +34,6 @@ export function getNextCycleItem<T>({
     start: dateOfLatestCycleBegin,
     end: today,
   });
-
-  console.log(days);
 
   let currentItem = 0;
   let date;
@@ -55,6 +51,5 @@ export function getNextCycleItem<T>({
   while (!isDateActiveForCycleItem(date, daysOfWeekRepeat)) {
     date = addDays(date, 1);
   }
-  console.log({ items, currentItem });
   return { item: items[(currentItem + 1) % items.length], date };
 }

@@ -1,5 +1,6 @@
 import { Box, Flex, Heading, List, Text } from "@chakra-ui/react";
 import { format } from "date-fns/format";
+import { formatDuration } from "date-fns/formatDuration";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -15,6 +16,7 @@ import TrackingTools from "./TrackingTools";
 import CyberpunkItem from "@/renderer/ui/CyberpunkItem";
 import Loading from "@/renderer/common/Loading";
 import { getNextCycleItem } from "../utils";
+import { formatDistance } from "date-fns/formatDistance";
 
 const Task = () => {
   const { taskId, id: activityId } = useParams();
@@ -63,15 +65,21 @@ const Task = () => {
     {} as Record<string, TimeRecord[]>
   );
 
+  const duration = formatDistance(Date.now(), startDate.getTime());
+
   return (
     <div>
       <Heading as="h1">{title}</Heading>
       <Text>{description}</Text>
       {cycleItems.length && (
         <Box>
-          <Heading size="md">
-            Start date: {format(startDate, "dd.MM.yyyy")}
-          </Heading>
+          <Flex justifyContent="space-between">
+            <Heading size="md">
+              Start date: {format(startDate, "dd.MM.yyyy")}
+            </Heading>
+            <Heading size="md">Duration: {duration}</Heading>
+          </Flex>
+
           <List mt={3}>
             <Box pl={5}>
               {cycleItems.map(item => {
