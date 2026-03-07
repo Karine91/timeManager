@@ -2,7 +2,13 @@
 import { Prisma } from "@prisma/client";
 
 import { IGetTaskByIdData } from "./api/tasks";
-import { Activities, Tasks, Records, UpsertTaskSupplyData } from "./api/types";
+import {
+  Activities,
+  Tasks,
+  Records,
+  UpsertTaskSupplyData,
+  CreateTaskSupplyRefillHistoryData,
+} from "./api/types";
 import { System } from "./system/types";
 
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
@@ -31,6 +37,8 @@ contextBridge.exposeInMainWorld("tasksApi", {
     ipcRenderer.invoke(Tasks.GetTasksByActivityId, activityId),
   upsertTaskSupply: (data: UpsertTaskSupplyData) =>
     ipcRenderer.invoke(Tasks.UpsertTaskSupply, data),
+  createTaskSupplyRefill: (data: CreateTaskSupplyRefillHistoryData) =>
+    ipcRenderer.invoke(Tasks.CreateTaskSupplyRefill, data),
 });
 
 contextBridge.exposeInMainWorld("recordsApi", {

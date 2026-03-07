@@ -4,7 +4,13 @@ import { useId } from "react";
 import { format } from "date-fns/format";
 import * as Yup from "yup";
 
-import { TaskSupply, TaskWithRecords, UpsertTaskSupplyData } from "../../../main/api/types";
+import {
+  TaskSupply,
+  TaskSupplyRefill,
+  TaskWithRecords,
+  UpsertTaskSupplyData,
+  CreateTaskSupplyRefillHistoryData,
+} from "../../../main/api/types";
 import { calculateEstimatedEndDate, calculateRemainingSupply } from "../utils";
 import ButtonModal from "@/renderer/common/forms/ButtonModal";
 import FieldInput from "@/renderer/ui/form/FieldInput";
@@ -21,6 +27,17 @@ const SupplySchema = Yup.object().shape({
   lastRefillDate: Yup.string().optional(),
 });
 
+const RefillSchema = Yup.object().shape({
+  quantity: Yup.number().required("Required").positive("Must be positive"),
+  unit: Yup.string().required("Required").max(32, "Too long"),
+  itemsPerUnit: Yup.number()
+    .transform((v, o) => (o === "" || o === undefined ? undefined : v))
+    .positive("Must be positive")
+    .optional(),
+  itemUnit: Yup.string().max(32, "Too long").optional(),
+  lastRefillDate: Yup.string().required("Required"),
+});
+
 interface SupplyFormValues {
   quantity: string;
   unit: string;
@@ -29,9 +46,15 @@ interface SupplyFormValues {
   lastRefillDate: string;
 }
 
+interface RefillFormValues {
+  description: string;
+  lastRefillDate: string;
+}
+
 interface SupplySectionProps {
   taskId: number;
   supply: TaskSupply | null;
+  supplyRefillsHistory: TaskSupplyRefill[];
   daysOfWeekRepeat: number[];
   onSupplyUpdate: (task: TaskWithRecords) => void;
 }
@@ -45,6 +68,7 @@ const formatDateForInput = (date: Date | string | null) => {
 const SupplySection = ({
   taskId,
   supply,
+  supplyRefillsHistory,
   daysOfWeekRepeat,
   onSupplyUpdate,
 }: SupplySectionProps) => {
@@ -52,7 +76,8 @@ const SupplySection = ({
   const initialValues: SupplyFormValues = {
     quantity: supply ? String(supply.quantity) : "",
     unit: supply?.unit ?? "",
-    itemsPerUnit: supply?.itemsPerUnit != null ? String(supply.itemsPerUnit) : "",
+    itemsPerUnit:
+      supply?.itemsPerUnit != null ? String(supply.itemsPerUnit) : "",
     itemUnit: supply?.itemUnit ?? "",
     lastRefillDate: supply ? formatDateForInput(supply.lastRefillDate) : "",
   };
@@ -65,11 +90,27 @@ const SupplySection = ({
       taskId,
       quantity: parseFloat(values.quantity),
       unit: values.unit,
-      itemsPerUnit: values.itemsPerUnit ? parseFloat(values.itemsPerUnit) : undefined,
+      itemsPerUnit: values.itemsPerUnit
+        ? parseFloat(values.itemsPerUnit)
+        : undefined,
       itemUnit: values.itemUnit || undefined,
       lastRefillDate: values.lastRefillDate || undefined,
     };
     const updatedTask = await window.tasksApi.upsertTaskSupply(data);
+    onSupplyUpdate(updatedTask);
+    actions.setSubmitting(false);
+  };
+
+  const handleRefillSubmit = async (
+    values: RefillFormValues,
+    actions: FormikHelpers<RefillFormValues>
+  ) => {
+    const data: CreateTaskSupplyRefillHistoryData = {
+      taskId,
+      description: values.description,
+      lastRefillDate: values.lastRefillDate || formatDateForInput(new Date()),
+    };
+    const updatedTask = await window.tasksApi.createTaskSupplyRefill(data);
     onSupplyUpdate(updatedTask);
     actions.setSubmitting(false);
   };
@@ -102,44 +143,58 @@ const SupplySection = ({
     };
 
     return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={SupplySchema}
-      onSubmit={handleFormSubmit}
-    >
-      {() => (
-        <Form id={formId}>
-          <ModalFormWrapper
-            header={supply ? "Edit supply" : "Add supply info"}
-            actions={
-              <>
-                <Button variant="ghost" mr={3} onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button form={formId} type="submit" colorScheme="blue">
-                  Save
-                </Button>
-              </>
-            }
-          >
-            <FieldInput mb={2} name="quantity" label="Quantity:" type="number" />
-            <FieldInput mb={2} name="unit" label="Unit (box, pills, ml, etc.):" />
-            <FieldInput
-              mb={2}
-              name="itemsPerUnit"
-              label="Items per unit (e.g. syringes per box):"
-              type="number"
-            />
-            <FieldInput
-              mb={2}
-              name="itemUnit"
-              label="Item name (e.g. syringe) - for display:"
-            />
-            <FieldInput mb={2} name="lastRefillDate" label="Last refill date:" type="date" />
-          </ModalFormWrapper>
-        </Form>
-      )}
-    </Formik>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={SupplySchema}
+        onSubmit={handleFormSubmit}
+      >
+        {() => (
+          <Form id={formId}>
+            <ModalFormWrapper
+              header={supply ? "Edit supply" : "Add supply info"}
+              actions={
+                <>
+                  <Button variant="ghost" mr={3} onClick={onClose}>
+                    Cancel
+                  </Button>
+                  <Button form={formId} type="submit" colorScheme="blue">
+                    Save
+                  </Button>
+                </>
+              }
+            >
+              <FieldInput
+                mb={2}
+                name="quantity"
+                label="Quantity:"
+                type="number"
+              />
+              <FieldInput
+                mb={2}
+                name="unit"
+                label="Unit (box, pills, ml, etc.):"
+              />
+              <FieldInput
+                mb={2}
+                name="itemsPerUnit"
+                label="Items per unit (e.g. syringes per box):"
+                type="number"
+              />
+              <FieldInput
+                mb={2}
+                name="itemUnit"
+                label="Item name (e.g. syringe) - for display:"
+              />
+              <FieldInput
+                mb={2}
+                name="lastRefillDate"
+                label="Refill date:"
+                type="date"
+              />
+            </ModalFormWrapper>
+          </Form>
+        )}
+      </Formik>
     );
   };
 
@@ -147,30 +202,40 @@ const SupplySection = ({
     <Box mt={4}>
       <Flex justifyContent="space-between" alignItems="center" mb={2}>
         <Heading size="md">Supply</Heading>
-        <ButtonModal buttonText={supply ? "Edit" : "Add supply info"}>
-          {(onClose) => <SupplyForm onClose={onClose} />}
-        </ButtonModal>
+        {supply ? (
+          <Flex gap={2}>
+            <ButtonModal buttonText="Edit supply">
+              {onClose => <SupplyForm onClose={onClose} />}
+            </ButtonModal>
+          </Flex>
+        ) : (
+          <ButtonModal buttonText="Add supply">
+            {onClose => <SupplyForm onClose={onClose} />}
+          </ButtonModal>
+        )}
       </Flex>
       {supply ? (
         <Box p={3} borderWidth={1} borderRadius="md">
           {supply.itemsPerUnit != null ? (
-            <Text>
-              <strong>
-                {(remainingSupply?.unitsLeft ?? supply.quantity).toFixed(2)}
-              </strong>{" "}
-              {supply.unit}
-              {supply.itemUnit
-                ? ` (${supply.itemsPerUnit} ${supply.itemUnit} each)`
-                : ` × ${supply.itemsPerUnit} each`}
-              {" = "}
-              <strong>
-                {(
-                  remainingSupply?.itemsLeft ??
-                  supply.quantity * supply.itemsPerUnit
-                ).toFixed(0)}
-              </strong>
-              {supply.itemUnit ? ` ${supply.itemUnit}` : " items"} available
-            </Text>
+            <>
+              <Text>
+                <strong>
+                  {(remainingSupply?.unitsLeft ?? supply.quantity).toFixed(2)}
+                </strong>{" "}
+                {supply.unit}
+                {supply.itemUnit
+                  ? ` (${supply.itemsPerUnit} ${supply.itemUnit} each)`
+                  : ` × ${supply.itemsPerUnit} each`}
+                {" = "}
+                <strong>
+                  {(
+                    remainingSupply?.itemsLeft ??
+                    supply.quantity * supply.itemsPerUnit
+                  ).toFixed(0)}
+                </strong>
+                {supply.itemUnit ? ` ${supply.itemUnit}` : " items"} available
+              </Text>
+            </>
           ) : (
             <Text>
               <strong>{supply.quantity}</strong> {supply.unit} available
@@ -179,16 +244,48 @@ const SupplySection = ({
           {estimatedEndDate && (
             <Text mt={1} fontSize="sm" color="gray.400" fontWeight="bold">
               <strong>Estimated end:</strong>{" "}
-              {format(
-                estimatedEndDate,
-                "dd.MM.yyyy"
-              )}
+              {format(estimatedEndDate, "dd.MM.yyyy")}
+            </Text>
+          )}
+          {supply.itemsPerUnit && (
+            <Text mt={1} fontSize="sm" color="gray.600">
+              Initial amount: <strong>{supply.quantity.toFixed(2)}</strong>{" "}
+              {supply.unit}
+              {supply.itemUnit
+                ? ` (${supply.itemsPerUnit} ${supply.itemUnit} each)`
+                : ` × ${supply.itemsPerUnit} each`}
             </Text>
           )}
           {supply.lastRefillDate && (
             <Text fontSize="sm" color="gray.600">
-              Last refill: {format(new Date(supply.lastRefillDate), "dd.MM.yyyy")}
+              Refill date:{" "}
+              {format(new Date(supply.lastRefillDate), "dd.MM.yyyy")}
             </Text>
+          )}
+          {supplyRefillsHistory.length > 0 && (
+            <Box mt={3}>
+              <Heading size="sm" mb={1}>
+                Refill history
+              </Heading>
+              {supplyRefillsHistory
+                .slice()
+                .sort(
+                  (a, b) =>
+                    new Date(b.date).getTime() - new Date(a.date).getTime()
+                )
+                .slice(0, 5)
+                .map(refill => (
+                  <Text key={refill.id} fontSize="sm" color="gray.600">
+                    {format(refill.date, "dd.MM.yyyy")}:{" "}
+                    <strong>{refill.description}</strong>
+                  </Text>
+                ))}
+              {supplyRefillsHistory.length > 5 && (
+                <Text fontSize="xs" color="gray.500">
+                  Showing latest 5 refills.
+                </Text>
+              )}
+            </Box>
           )}
         </Box>
       ) : (

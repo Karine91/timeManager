@@ -85,6 +85,7 @@ const Task = () => {
       <SupplySection
         taskId={taskData.id}
         supply={taskData.supply}
+        supplyRefillsHistory={taskData.supplyRefillsHistory ?? []}
         daysOfWeekRepeat={taskData.daysOfWeekRepeat}
         onSupplyUpdate={setTaskData}
       />

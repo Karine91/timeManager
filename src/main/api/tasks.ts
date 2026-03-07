@@ -3,7 +3,12 @@ import { ipcMain, IpcMainInvokeEvent } from "electron";
 
 import prisma from "../prisma";
 
-import { Tasks, TaskWithRecords, UpsertTaskSupplyData } from "./types";
+import {
+  Tasks,
+  TaskWithRecords,
+  UpsertTaskSupplyData,
+  CreateTaskSupplyRefillHistoryData,
+} from "./types";
 
 export const createActivityTask = (
   event: IpcMainInvokeEvent,
@@ -47,6 +52,7 @@ export const getTaskById = (
             records: true,
             cycleItems: true,
             supply: true,
+            supplyRefillsHistory: true,
           },
         },
       },
@@ -65,7 +71,14 @@ export const getTasksByActivityId = (
 
 export const upsertTaskSupply = (
   event: IpcMainInvokeEvent,
-  { taskId, quantity, unit, itemsPerUnit, itemUnit, lastRefillDate }: UpsertTaskSupplyData
+  {
+    taskId,
+    quantity,
+    unit,
+    itemsPerUnit,
+    itemUnit,
+    lastRefillDate,
+  }: UpsertTaskSupplyData
 ) => {
   const supplyData = {
     quantity,
@@ -88,7 +101,25 @@ export const upsertTaskSupply = (
       records: true,
       cycleItems: true,
       supply: true,
+      supplyRefillsHistory: true,
     },
+  });
+};
+
+export const createTaskSupplyRefillHistory = (
+  event: IpcMainInvokeEvent,
+  { taskId, description, lastRefillDate }: CreateTaskSupplyRefillHistoryData
+) => {
+  const refillDate = new Date(lastRefillDate);
+
+  return prisma.$transaction(async tx => {
+    await tx.taskSupplyRefill.create({
+      data: {
+        taskId,
+        description,
+        date: refillDate,
+      },
+    });
   });
 };
 
@@ -97,6 +128,7 @@ const handleTasksApi = () => {
   ipcMain.handle(Tasks.GetTaskById, getTaskById);
   ipcMain.handle(Tasks.GetTasksByActivityId, getTasksByActivityId);
   ipcMain.handle(Tasks.UpsertTaskSupply, upsertTaskSupply);
+  ipcMain.handle(Tasks.CreateTaskSupplyRefill, createTaskSupplyRefillHistory);
 };
 
 export default handleTasksApi;

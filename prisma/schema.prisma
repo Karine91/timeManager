@@ -30,6 +30,7 @@ model Task {
   daysOfWeekRepeat Json?
   cycleItems CycleItem[]
   supply TaskSupply?
+  supplyRefillsHistory TaskSupplyRefill[]
 }
 
 model TaskSupply {
@@ -41,6 +42,14 @@ model TaskSupply {
   lastRefillDate   DateTime?
   task             Task      @relation(fields: [taskId], references: [id])
   taskId           Int       @unique
+}
+
+model TaskSupplyRefill {
+  id       Int      @id @default(autoincrement())
+  date     DateTime
+  description     String
+  task     Task     @relation(fields: [taskId], references: [id])
+  taskId   Int
 }
 
 model CycleItem {
