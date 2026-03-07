@@ -101,3 +101,63 @@ export function calculateEstimatedEndDate({
   const baseDate = startOfDay(new Date());
   return addDays(baseDate, daysOfSupply);
 }
+
+export function calculateRemainingSupply({
+  quantity,
+  itemsPerUnit,
+  daysOfWeekRepeat,
+  lastRefillDate,
+}: {
+  quantity: number;
+  itemsPerUnit?: number | null;
+  daysOfWeekRepeat: number[];
+  lastRefillDate?: string | Date | null;
+}): { unitsLeft: number; itemsLeft: number } | null {
+  if (!quantity || !Number.isFinite(quantity)) return null;
+
+  const perUnit = itemsPerUnit ?? 1;
+  const totalItems = quantity * perUnit;
+  if (totalItems <= 0 || !Number.isFinite(totalItems)) return null;
+
+  if (!lastRefillDate) {
+    return { unitsLeft: quantity, itemsLeft: totalItems };
+  }
+
+  if (!daysOfWeekRepeat || daysOfWeekRepeat.length === 0) {
+    return { unitsLeft: quantity, itemsLeft: totalItems };
+  }
+
+  const startDate =
+    typeof lastRefillDate === "string"
+      ? startOfDay(new Date(lastRefillDate))
+      : startOfDay(lastRefillDate);
+  const today = startOfDay(new Date());
+
+  if (today <= startDate) {
+    return { unitsLeft: quantity, itemsLeft: totalItems };
+  }
+
+  const todayIsActive = isDateActiveForCycleItem(today, daysOfWeekRepeat);
+  const endDate = todayIsActive ? subDays(today, 1) : today;
+
+  if (endDate < startDate) {
+    return { unitsLeft: quantity, itemsLeft: totalItems };
+  }
+
+  const days = eachDayOfInterval({
+    start: startDate,
+    end: endDate,
+  });
+
+  let usedItems = 0;
+  for (const day of days) {
+    if (isDateActiveForCycleItem(day, daysOfWeekRepeat)) {
+      usedItems++;
+    }
+  }
+
+  const itemsLeft = Math.max(totalItems - usedItems, 0);
+  const unitsLeft = itemsLeft / perUnit;
+
+  return { unitsLeft, itemsLeft };
+}

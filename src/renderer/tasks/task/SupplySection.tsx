@@ -5,7 +5,7 @@ import { format } from "date-fns/format";
 import * as Yup from "yup";
 
 import { TaskSupply, TaskWithRecords, UpsertTaskSupplyData } from "../../../main/api/types";
-import { calculateEstimatedEndDate } from "../utils";
+import { calculateEstimatedEndDate, calculateRemainingSupply } from "../utils";
 import ButtonModal from "@/renderer/common/forms/ButtonModal";
 import FieldInput from "@/renderer/ui/form/FieldInput";
 import ModalFormWrapper from "@/renderer/ui/form/ModalFormWrapper";
@@ -74,6 +74,15 @@ const SupplySection = ({
     actions.setSubmitting(false);
   };
 
+  const remainingSupply =
+    supply &&
+    calculateRemainingSupply({
+      quantity: supply.quantity,
+      itemsPerUnit: supply.itemsPerUnit,
+      daysOfWeekRepeat,
+      lastRefillDate: supply.lastRefillDate,
+    });
+
   const SupplyForm = ({ onClose }: { onClose: () => void }) => {
     const handleFormSubmit = async (
       vals: SupplyFormValues,
@@ -137,13 +146,21 @@ const SupplySection = ({
         <Box p={3} borderWidth={1} borderRadius="md">
           {supply.itemsPerUnit != null ? (
             <Text>
-              <strong>{supply.quantity}</strong> {supply.unit}
+              <strong>
+                {(remainingSupply?.unitsLeft ?? supply.quantity).toFixed(2)}
+              </strong>{" "}
+              {supply.unit}
               {supply.itemUnit
                 ? ` (${supply.itemsPerUnit} ${supply.itemUnit} each)`
                 : ` × ${supply.itemsPerUnit} each`}
               {" = "}
-              <strong>{supply.quantity * supply.itemsPerUnit}</strong>
-              {supply.itemUnit ? ` ${supply.itemUnit}` : " total"} available
+              <strong>
+                {(
+                  remainingSupply?.itemsLeft ??
+                  supply.quantity * supply.itemsPerUnit
+                ).toFixed(0)}
+              </strong>
+              {supply.itemUnit ? ` ${supply.itemUnit}` : " items"} available
             </Text>
           ) : (
             <Text>
@@ -155,8 +172,8 @@ const SupplySection = ({
             itemsPerUnit: supply.itemsPerUnit,
             daysOfWeekRepeat,
           }) && (
-            <Text mt={1} fontSize="sm" color="gray.600">
-              Estimated end:{" "}
+            <Text mt={1} fontSize="sm" color="gray.400" fontWeight="bold">
+              <strong>Estimated end:</strong>{" "}
               {format(
                 calculateEstimatedEndDate({
                   quantity: supply.quantity,
