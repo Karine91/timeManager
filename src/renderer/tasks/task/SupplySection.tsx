@@ -83,6 +83,15 @@ const SupplySection = ({
       lastRefillDate: supply.lastRefillDate,
     });
 
+  const estimatedEndDate =
+    supply && remainingSupply
+      ? calculateEstimatedEndDate({
+          quantity: remainingSupply.itemsLeft,
+          itemsPerUnit: 1,
+          daysOfWeekRepeat,
+        })
+      : null;
+
   const SupplyForm = ({ onClose }: { onClose: () => void }) => {
     const handleFormSubmit = async (
       vals: SupplyFormValues,
@@ -167,19 +176,11 @@ const SupplySection = ({
               <strong>{supply.quantity}</strong> {supply.unit} available
             </Text>
           )}
-          {calculateEstimatedEndDate({
-            quantity: supply.quantity,
-            itemsPerUnit: supply.itemsPerUnit,
-            daysOfWeekRepeat,
-          }) && (
+          {estimatedEndDate && (
             <Text mt={1} fontSize="sm" color="gray.400" fontWeight="bold">
               <strong>Estimated end:</strong>{" "}
               {format(
-                calculateEstimatedEndDate({
-                  quantity: supply.quantity,
-                  itemsPerUnit: supply.itemsPerUnit,
-                  daysOfWeekRepeat,
-                })!,
+                estimatedEndDate,
                 "dd.MM.yyyy"
               )}
             </Text>
