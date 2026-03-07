@@ -29,6 +29,18 @@ model Task {
   activityId Int
   daysOfWeekRepeat Json?
   cycleItems CycleItem[]
+  supply TaskSupply?
+}
+
+model TaskSupply {
+  id               Int       @id @default(autoincrement())
+  quantity         Float
+  unit             String
+  itemsPerUnit     Float?    // e.g. syringes per box - when set: total = quantity × itemsPerUnit
+  itemUnit         String?   // e.g. "syringe" - item name for display
+  lastRefillDate   DateTime?
+  task             Task      @relation(fields: [taskId], references: [id])
+  taskId           Int       @unique
 }
 
 model CycleItem {

@@ -8,9 +8,9 @@ import { TaskWithRecords, CycleItem } from "../../../main/api/types";
 
 import CyberpunkItem from "@/renderer/ui/CyberpunkItem";
 import Loading from "@/renderer/common/Loading";
-import { getNextCycleItem } from "../utils";
-import { formatDistance } from "date-fns/formatDistance";
+import { getNextCycleItem, formatMonthsAndDays } from "../utils";
 import RecordsSection from "./records/RecordsSection";
+import SupplySection from "./SupplySection";
 
 const Task = () => {
   const { taskId, id: activityId } = useParams();
@@ -39,7 +39,6 @@ const Task = () => {
 
   if (!taskData) return <Loading />;
 
-  console.log(taskData, nextCycleItem);
   const {
     records,
     description,
@@ -49,7 +48,7 @@ const Task = () => {
     daysOfWeekRepeat,
   } = taskData;
 
-  const duration = formatDistance(Date.now(), startDate.getTime());
+  const duration = formatMonthsAndDays(startDate);
 
   return (
     <div>
@@ -83,6 +82,12 @@ const Task = () => {
           </List>
         </Box>
       )}
+      <SupplySection
+        taskId={taskData.id}
+        supply={taskData.supply}
+        daysOfWeekRepeat={taskData.daysOfWeekRepeat}
+        onSupplyUpdate={setTaskData}
+      />
       <RecordsSection taskRecords={taskData.records} />
     </div>
   );

@@ -13,6 +13,7 @@ export const enum Tasks {
   CreateActivityTask = "create_activity_task",
   GetTaskById = "get_task_by_id",
   GetTasksByActivityId = "get_tasks_by_activity_id",
+  UpsertTaskSupply = "upsert_task_supply",
 }
 
 export const enum Records {
@@ -28,10 +29,11 @@ export type Task<T = {}> = Omit<
   daysOfWeekRepeat: number[];
 };
 export type TaskWithRecords = Task<{
-  include: { records: true; cycleItems: true };
+  include: { records: true; cycleItems: true; supply: true };
 }>;
 export type Record = Prisma.RecordGetPayload<{}>;
 export type CycleItem = Prisma.CycleItemGetPayload<{}>;
+export type TaskSupply = Prisma.TaskSupplyGetPayload<{}>;
 
 export interface IActivitiesApi {
   getActivities: () => Prisma.PrismaPromise<Activity[]>;
@@ -50,6 +52,16 @@ export interface ITasksApi {
     data: IGetTaskByIdData
   ) => Prisma.PrismaPromise<TaskWithRecords>;
   getTasksByActivityId: (activityId: number) => Prisma.PrismaPromise<Task[]>;
+  upsertTaskSupply: (data: UpsertTaskSupplyData) => Prisma.PrismaPromise<TaskWithRecords>;
+}
+
+export interface UpsertTaskSupplyData {
+  taskId: number;
+  quantity: number;
+  unit: string;
+  itemsPerUnit?: number;
+  itemUnit?: string;
+  lastRefillDate?: string;
 }
 
 export interface IRecordsApi {

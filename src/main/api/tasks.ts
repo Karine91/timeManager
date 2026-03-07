@@ -3,7 +3,7 @@ import { ipcMain, IpcMainInvokeEvent } from "electron";
 
 import prisma from "../prisma";
 
-import { Tasks, TaskWithRecords } from "./types";
+import { Tasks, TaskWithRecords, UpsertTaskSupplyData } from "./types";
 
 export const createActivityTask = (
   event: IpcMainInvokeEvent,
@@ -46,6 +46,7 @@ export const getTaskById = (
           include: {
             records: true,
             cycleItems: true,
+            supply: true,
           },
         },
       },
@@ -62,10 +63,40 @@ export const getTasksByActivityId = (
   });
 };
 
+export const upsertTaskSupply = (
+  event: IpcMainInvokeEvent,
+  { taskId, quantity, unit, itemsPerUnit, itemUnit, lastRefillDate }: UpsertTaskSupplyData
+) => {
+  const supplyData = {
+    quantity,
+    unit,
+    itemsPerUnit: itemsPerUnit ?? null,
+    itemUnit: itemUnit || null,
+    lastRefillDate: lastRefillDate ? new Date(lastRefillDate) : null,
+  };
+  return prisma.task.update({
+    where: { id: taskId },
+    data: {
+      supply: {
+        upsert: {
+          create: supplyData,
+          update: supplyData,
+        },
+      },
+    },
+    include: {
+      records: true,
+      cycleItems: true,
+      supply: true,
+    },
+  });
+};
+
 const handleTasksApi = () => {
   ipcMain.handle(Tasks.CreateActivityTask, createActivityTask);
   ipcMain.handle(Tasks.GetTaskById, getTaskById);
   ipcMain.handle(Tasks.GetTasksByActivityId, getTasksByActivityId);
+  ipcMain.handle(Tasks.UpsertTaskSupply, upsertTaskSupply);
 };
 
 export default handleTasksApi;
